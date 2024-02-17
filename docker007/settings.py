@@ -136,15 +136,22 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# CELERY_BROKER_URL = 'redis://redis:6379/0'  # URL брокера сообщений (в данном случае Redis)
-# CELERY_RESULT_BACKEND = 'redis://redis:6379/0'  # URL для хранения результатов задач
+CELERY_BROKER_URL = 'redis://redis:6379'  # URL брокера сообщений (в данном случае Redis)
+CELERY_RESULT_BACKEND = 'redis://redis:6379'  # URL для хранения результатов задач
 
 # Замените настройки для использования RabbitMQ
-CELERY_BROKER_URL = 'pyamqp://user:password@rabbitmq:5672/'
-CELERY_RESULT_BACKEND = 'rpc://user:password@rabbitmq:5672/'
+# CELERY_BROKER_URL = 'pyamqp://user:password@rabbitmq:5672/'
+# CELERY_RESULT_BACKEND = 'rpc://user:password@rabbitmq:5672/'
 #
 # # Обязательно укажите учетные данные пользователя и пароля для RabbitMQ
-CELERY_BROKER_USER = 'user'
-CELERY_BROKER_PASSWORD = 'password'
+# CELERY_BROKER_USER = 'user'
+# CELERY_BROKER_PASSWORD = 'password'
 
 FLOWER_API_URL = 'http://flower:5555/api/task'
+
+CELERY_BEAT_SCHEDULE = {
+    'task_every_10_second': {
+        'task': 'sample_app.tasks.printer',
+        'schedule': 3.0
+    },
+}

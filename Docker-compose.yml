@@ -8,11 +8,11 @@ services:
       - .:/code
     ports:
       - 8000:8000
-    depends_on:
-      - db
-      - celery_worker
-      - redis
-      - rabbitmq
+#    depends_on:
+#      - db
+#      - celery_worker
+#      - redis
+#      - rabbitmq
 
 #    command: ["tail", "-f", "/dev/null"]  # Оставляем контейнер в режиме ожидания
 
@@ -28,38 +28,49 @@ services:
   celery_worker:
     build: .
     command: celery -A docker007 worker --loglevel=info
-    volumes:
-      - .:/code
-    depends_on:
-      - rabbitmq
-    environment:
-      - "CELERY_BROKER=pyamqp://user:password@rabbitmq:5672/"  # Замените на ваш брокер
+#    volumes:
+#      - .:/code
+#    depends_on:
+#      - rabbitmq
+#    environment:
+#      - "CELERY_BROKER=pyamqp://user:password@rabbitmq:5672/"  # Замените на ваш брокер
 # посмотреть логи запуска воркера docker-compose logs celery_worker
+
+  celery_beat:
+    build: .
+    command: celery -A docker007 beat --loglevel=info
+#    volumes:
+#      - .:/code
+#    depends_on:
+#      - rabbitmq
+#    environment:
+#      - "CELERY_BROKER=pyamqp://user:password@rabbitmq:5672/"  # Замените на ваш брокер
+  # посмотреть логи запуска воркера docker-compose logs celery_worker
 
   redis:
     image: redis
-    volumes:
-      - redis_data:/data
+#    volumes:
+#      - redis_data:/data
     ports:
       - "6379:6379"
 
-  rabbitmq:
-    image: "rabbitmq:management"
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      - RABBITMQ_DEFAULT_USER=user
-      - RABBITMQ_DEFAULT_PASS=password
+#  rabbitmq:
+#    image: "rabbitmq:management"
+#    ports:
+#      - "5672:5672"
+#      - "15672:15672"
+#    environment:
+#      - RABBITMQ_DEFAULT_USER=user
+#      - RABBITMQ_DEFAULT_PASS=password
 
   flower:
     image: mher/flower:0.9.5
-    command: [ 'flower', '--broker=pyamqp://user:password@rabbitmq:5672/', '--port=5555',  '--loglevel=debug' ]
-#    command: [ 'flower', '--broker=redis://redis:6379', '--port=5555' ]
+##    command: [ 'flower', '--broker=pyamqp://user:password@rabbitmq:5672/', '--port=5555',  '--loglevel=debug' ]
+    command: [ 'flower', '--broker=redis://redis:6379', '--port=5555' ]
     ports:
       - 5555:5555
 
 
 volumes:
   postgres_data:
-  redis_data:
+#  redis_data:
