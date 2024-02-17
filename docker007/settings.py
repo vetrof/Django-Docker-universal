@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'sample_app',
+    'redisboard',
 ]
 
 MIDDLEWARE = [
@@ -136,8 +138,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-CELERY_BROKER_URL = 'redis://redis:6379'  # URL брокера сообщений (в данном случае Redis)
-CELERY_RESULT_BACKEND = 'redis://redis:6379'  # URL для хранения результатов задач
+CELERY_BROKER_URL = 'redis://redis:6379/0'  # URL брокера сообщений (в данном случае Redis)
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'  # URL для хранения результатов задач
 
 # Замените настройки для использования RabbitMQ
 # CELERY_BROKER_URL = 'pyamqp://user:password@rabbitmq:5672/'
@@ -155,3 +157,7 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': 3.0
     },
 }
+
+CACHES = { 'default': {
+    'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+    'LOCATION': 'redis://redis:6379/1'}}

@@ -10,3 +10,6 @@ COPY ./req.txt .
 RUN pip install -r req.txt
 
 COPY . .
+
+ARG TAG
+LABEL tag=$TAG

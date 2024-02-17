@@ -1,3 +1,6 @@
+# посмотреть логи запуска воркера docker-compose logs celery_worker
+# docker image prune
+
 version: "3.9"
 
 services:
@@ -8,11 +11,15 @@ services:
       - .:/code
     ports:
       - 8000:8000
-#    depends_on:
-#      - db
-#      - celery_worker
-#      - redis
-#      - rabbitmq
+    depends_on:
+      db:
+        condition: service_healthy
+      celery_worker:
+        condition: service_started
+      redis:
+        condition: service_started
+      celery_beat:
+        condition: service_started
 
 #    command: ["tail", "-f", "/dev/null"]  # Оставляем контейнер в режиме ожидания
 
@@ -23,6 +30,12 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     environment:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d cafe1" ]
+      interval: 3s
+      timeout: 30s
+      retries: 5
+      start_period: 80s
 
 
   celery_worker:
@@ -34,23 +47,17 @@ services:
 #      - rabbitmq
 #    environment:
 #      - "CELERY_BROKER=pyamqp://user:password@rabbitmq:5672/"  # Замените на ваш брокер
-# посмотреть логи запуска воркера docker-compose logs celery_worker
+
 
   celery_beat:
     build: .
     command: celery -A docker007 beat --loglevel=info
-#    volumes:
-#      - .:/code
-#    depends_on:
-#      - rabbitmq
-#    environment:
-#      - "CELERY_BROKER=pyamqp://user:password@rabbitmq:5672/"  # Замените на ваш брокер
-  # посмотреть логи запуска воркера docker-compose logs celery_worker
+
 
   redis:
     image: redis
-#    volumes:
-#      - redis_data:/data
+    volumes:
+      - redis_data:/data
     ports:
       - "6379:6379"
 
@@ -73,4 +80,4 @@ services:
 
 volumes:
   postgres_data:
-#  redis_data:
+  redis_data:
