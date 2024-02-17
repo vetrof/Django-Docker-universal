@@ -86,9 +86,9 @@ WSGI_APPLICATION = 'docker007.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "postgres",
+        "NAME": "test_base",
         "USER": "postgres",
-        "PASSWORD": "postgres",
+        "PASSWORD": "GmailAsus3141",
         "HOST": "db",
         "PORT": 5432,
     }
