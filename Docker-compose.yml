@@ -18,24 +18,10 @@ services:
         condition: service_started
       redis:
         condition: service_started
-      celery_beat:
-        condition: service_started
+#      celery_beat:
+#        condition: service_started
 
 #    command: ["tail", "-f", "/dev/null"]  # Оставляем контейнер в режиме ожидания
-
-
-#  db:
-#    image: postgres:13
-#    volumes:
-#      - postgres_data:/var/lib/postgresql/data/
-#    environment:
-#      - "POSTGRES_HOST_AUTH_METHOD=trust"
-#    healthcheck:
-#      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d cafe1" ]
-#      interval: 3s
-#      timeout: 30s
-#      retries: 5
-#      start_period: 80s
 
 
   db:
@@ -48,8 +34,10 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     environment:
       POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d cafe1" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d psdb" ]
       interval: 3s
       timeout: 30s
       retries: 5
@@ -59,8 +47,8 @@ services:
   celery_worker:
     build: .
     command: celery -A docker007 worker --loglevel=info
-#    volumes:
-#      - .:/code
+    volumes:
+      - .:/code
 #    depends_on:
 #      - rabbitmq
 #    environment:

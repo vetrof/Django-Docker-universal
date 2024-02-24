@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'sample_app',
     'redisboard',
+    'debug_toolbar'
+
 ]
 
 MIDDLEWARE = [
@@ -49,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'docker007.urls'
@@ -86,9 +89,9 @@ WSGI_APPLICATION = 'docker007.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "test_base",
+        "NAME": "psdb",
         "USER": "postgres",
-        "PASSWORD": "GmailAsus3141",
+        "PASSWORD": "postgres",
         "HOST": "db",
         "PORT": 5432,
     }
@@ -161,3 +164,10 @@ CELERY_BEAT_SCHEDULE = {
 CACHES = { 'default': {
     'BACKEND': 'django.core.cache.backends.redis.RedisCache',
     'LOCATION': 'redis://redis:6379/1'}}
+
+
+INTERNAL_IPS = [
+
+    "127.0.0.1",
+
+]
