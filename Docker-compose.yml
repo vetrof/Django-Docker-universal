@@ -18,8 +18,8 @@ services:
         condition: service_started
       redis:
         condition: service_started
-#      celery_beat:
-#        condition: service_started
+      celery_beat:
+        condition: service_started
 
 #    command: ["tail", "-f", "/dev/null"]  # Оставляем контейнер в режиме ожидания
 
@@ -84,6 +84,8 @@ services:
       - 5555:5555
 
 
+
 volumes:
   postgres_data:
   redis_data:
+

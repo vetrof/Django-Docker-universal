@@ -12,4 +12,4 @@ RUN pip install -r req.txt
 COPY . .
 
 ARG TAG
-LABEL tag=$TAG
+LABEL tag=docker007
