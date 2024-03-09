@@ -21,3 +21,4 @@ wcwidth==0.2.12
 flower==2.0.1
 django-redisboard
 django-debug-toolbar==4.3.0
+ipython

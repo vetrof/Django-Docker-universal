@@ -1,1 +1,4 @@
-print([1,2,3,4,5,6,7,8,9,0])
+import os
+import django
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "docker007.settings")
+django.setup()
